@@ -34,6 +34,7 @@ import com.intellij.psi.PsiManager;
 import com.intellij.ui.EditorNotificationPanel;
 import com.intellij.ui.EditorNotifications;
 import com.intellij.util.containers.ContainerUtil;
+import com.intellij.util.containers.WeakKeyWeakValueHashMap;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.command.AppendFileCommandAction;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
@@ -49,7 +50,6 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Editor notification provider that suggests to add unversioned files to the .gitignore file.
@@ -79,7 +79,8 @@ public class AddUnversionedFilesNotificationProvider extends EditorNotifications
     private final List<String> unignoredFiles = ContainerUtil.newArrayList();
 
     /** Map to obtain if file was handled. */
-    private final Map<VirtualFile, Boolean> handledMap = ContainerUtil.createWeakKeyWeakValueMap();
+    private final WeakKeyWeakValueHashMap<VirtualFile, Boolean> handledMap =
+            new WeakKeyWeakValueHashMap<VirtualFile, Boolean>();
 
     /**
      * Builds a new instance of {@link AddUnversionedFilesNotificationProvider}.
