@@ -27,6 +27,7 @@ package mobi.hsz.idea.gitignore;
 import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
+import com.intellij.openapi.project.ProjectManagerAdapter;
 import com.intellij.openapi.project.ProjectManagerListener;
 import com.intellij.openapi.roots.ContentIterator;
 import com.intellij.openapi.startup.StartupManager;
@@ -59,7 +60,7 @@ public class IgnoreFileBasedIndexProjectHandler extends AbstractProjectComponent
 
     /** Project listener to remove {@link IndexableFileSet} from the indexable sets. */
     @NotNull
-    private final ProjectManagerListener projectListener = new ProjectManagerListener() {
+    private final ProjectManagerListener projectListener = new ProjectManagerAdapter() {
         public void projectClosing(Project project) {
             index.removeIndexableSet(IgnoreFileBasedIndexProjectHandler.this);
         }
