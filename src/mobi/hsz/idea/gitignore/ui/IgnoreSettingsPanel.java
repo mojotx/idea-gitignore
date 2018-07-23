@@ -59,7 +59,6 @@ import com.intellij.ui.components.JBPanel;
 import com.intellij.ui.components.labels.ActionLink;
 import com.intellij.ui.table.JBTable;
 import com.intellij.util.containers.ContainerUtil;
-import com.intellij.util.ui.JBUI;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
@@ -71,6 +70,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
@@ -80,6 +80,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
+import static com.intellij.ui.IdeBorderFactory.createEmptyBorder;
 import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.IgnoreLanguagesSettings.KEY.ENABLE;
 import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.IgnoreLanguagesSettings.KEY.NEW_FILE;
 
@@ -155,13 +156,13 @@ public class IgnoreSettingsPanel implements Disposable {
 
         languagesTable.setStriped(true);
         languagesTable.setShowGrid(false);
-        languagesTable.setBorder(JBUI.Borders.empty());
+        languagesTable.setBorder(createEmptyBorder());
         languagesTable.setDragEnabled(false);
 
         languagesPanel = ScrollPaneFactory.createScrollPane(languagesTable);
 
         donatePanel = new JBPanel(new BorderLayout());
-        donatePanel.setBorder(JBUI.Borders.empty(10, 0));
+        donatePanel.setBorder(new EmptyBorder(10, 0, 10, 0));
         donatePanel.add(new JBLabel(IgnoreBundle.message("settings.general.donate")), BorderLayout.WEST);
         donatePanel.add(createLink(
                 "Donate with PayPal",
@@ -183,7 +184,7 @@ public class IgnoreSettingsPanel implements Disposable {
                 BrowserUtil.browse(url);
             }
         });
-        action.setBorder(JBUI.Borders.empty(0, 5));
+        action.setBorder(new EmptyBorder(0, 5, 0, 5));
         return action;
     }
 
