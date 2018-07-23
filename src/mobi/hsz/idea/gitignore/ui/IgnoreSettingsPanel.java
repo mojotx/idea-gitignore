@@ -599,7 +599,7 @@ public class IgnoreSettingsPanel implements Disposable {
         public List<IgnoreSettings.UserTemplate> getList() {
             ArrayList<IgnoreSettings.UserTemplate> list = ContainerUtil.newArrayList();
             for (int i = 0; i < myListModel.size(); i++) {
-                list.add(myListModel.getElementAt(i));
+                list.add((IgnoreSettings.UserTemplate) myListModel.getElementAt(i));
             }
             return list;
         }
@@ -627,7 +627,7 @@ public class IgnoreSettingsPanel implements Disposable {
             if (index == -1) {
                 return null;
             }
-            return myListModel.get(index);
+            return (IgnoreSettings.UserTemplate) myListModel.get(index);
         }
 
         /**

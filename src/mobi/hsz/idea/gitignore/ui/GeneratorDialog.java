@@ -239,16 +239,11 @@ public class GeneratorDialog extends DialogWrapper {
             content.append(IgnoreBundle.message("file.templateSection", template.getName()));
             content.append(Constants.NEWLINE).append(template.getContent());
         }
-        try {
-            if (file == null && action != null) {
-                file = action.execute();
-            }
-            if (file != null && (content.length() > 0)) {
-                new AppendFileCommandAction(project, file, content.toString(), ignoreDuplicates, ignoreComments)
-                        .execute();
-            }
-        } catch (Throwable throwable) {
-            throwable.printStackTrace();
+        if (file == null && action != null) {
+            file = action.execute().getResultObject();
+        }
+        if (file != null && (content.length() > 0)) {
+            new AppendFileCommandAction(project, file, content.toString(), ignoreDuplicates, ignoreComments).execute();
         }
         super.doOKAction();
     }

@@ -24,6 +24,8 @@
 
 package mobi.hsz.idea.gitignore.command;
 
+import com.intellij.openapi.application.Result;
+import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
@@ -37,7 +39,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.3.3
  */
-public class CreateFileCommandAction extends CommandAction<PsiFile> {
+public class CreateFileCommandAction extends WriteCommandAction<PsiFile> {
     /** Working directory. */
     private final PsiDirectory directory;
 
@@ -62,11 +64,12 @@ public class CreateFileCommandAction extends CommandAction<PsiFile> {
     /**
      * Creates a new file using {@link IgnoreTemplatesFactory#createFromTemplate(PsiDirectory)} to fill it with content.
      *
-     * @return created file
+     * @param result command result
+     * @throws Throwable
      */
     @Override
-    protected PsiFile compute() {
+    protected void run(@NotNull Result<PsiFile> result) throws Throwable {
         IgnoreTemplatesFactory factory = new IgnoreTemplatesFactory(fileType);
-        return factory.createFromTemplate(directory);
+        result.setResult(factory.createFromTemplate(directory));
     }
 }

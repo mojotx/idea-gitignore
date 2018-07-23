@@ -139,11 +139,7 @@ public class Utils {
         VirtualFile virtualFile = file == null ? directory.getVirtualFile().findChild(filename) : file.getVirtualFile();
 
         if (file == null && virtualFile == null && createIfMissing) {
-            try {
-                file = new CreateFileCommandAction(project, directory, fileType).execute();
-            } catch (Throwable throwable) {
-                throwable.printStackTrace();
-            }
+            file = new CreateFileCommandAction(project, directory, fileType).execute().getResultObject();
         }
 
         return file;
