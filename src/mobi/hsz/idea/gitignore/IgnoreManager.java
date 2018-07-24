@@ -49,6 +49,7 @@ import com.intellij.openapi.vcs.VcsRoot;
 import com.intellij.openapi.vfs.*;
 import com.intellij.util.Function;
 import com.intellij.util.Time;
+import com.intellij.util.containers.ConcurrentWeakHashMap;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.messages.MessageBusConnection;
 import com.intellij.util.messages.Topic;
@@ -131,7 +132,8 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
 
     /** List of the files that are ignored and also tracked by Git. */
     @NotNull
-    private final ConcurrentMap<VirtualFile, VcsRoot> confirmedIgnoredFiles = ContainerUtil.createConcurrentWeakMap();
+    private final ConcurrentMap<VirtualFile, VcsRoot> confirmedIgnoredFiles =
+            new ConcurrentWeakHashMap<VirtualFile, VcsRoot>();
 
     /** List of the new files that were not covered by {@link #confirmedIgnoredFiles} yet. */
     @NotNull

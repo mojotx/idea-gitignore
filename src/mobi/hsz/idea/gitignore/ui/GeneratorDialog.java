@@ -44,7 +44,6 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiFile;
 import com.intellij.ui.*;
 import com.intellij.util.containers.ContainerUtil;
-import com.intellij.util.ui.JBUI;
 import com.intellij.util.ui.UIUtil;
 import com.intellij.util.ui.tree.TreeUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
@@ -285,13 +284,13 @@ public class GeneratorDialog extends DialogWrapper {
         treePanel.add(treeScrollPanel, BorderLayout.CENTER);
 
         final JPanel northPanel = new JPanel(new GridBagLayout());
-        northPanel.setBorder(JBUI.Borders.empty(2, 0));
+        northPanel.setBorder(IdeBorderFactory.createEmptyBorder(2, 0, 2, 0));
         northPanel.add(createTreeActionsToolbarPanel(treeScrollPanel).getComponent(),
                 new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.BASELINE_LEADING,
-                        GridBagConstraints.HORIZONTAL, JBUI.emptyInsets(), 0, 0)
+                        GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0)
         );
         northPanel.add(profileFilter, new GridBagConstraints(1, 0, 1, 1, 1, 1, GridBagConstraints.BASELINE_TRAILING,
-                GridBagConstraints.HORIZONTAL, JBUI.emptyInsets(), 0, 0));
+                GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
         treePanel.add(northPanel, BorderLayout.NORTH);
 
         return centerPanel;
