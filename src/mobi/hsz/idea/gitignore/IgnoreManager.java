@@ -211,7 +211,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
 
     /** {@link VirtualFileListener} instance to check if file's content was changed. */
     @NotNull
-    private final VirtualFileListener virtualFileListener = new VirtualFileListener() {
+    private final VirtualFileListener virtualFileListener = new VirtualFileAdapter() {
         @Override
         public void contentsChanged(@NotNull VirtualFileEvent event) {
             handleEvent(event);
