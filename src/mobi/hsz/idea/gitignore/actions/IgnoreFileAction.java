@@ -122,7 +122,7 @@ public class IgnoreFileAction extends DumbAwareAction {
      * @param e action event
      */
     @Override
-    public void actionPerformed(AnActionEvent e) {
+    public void actionPerformed(@NotNull AnActionEvent e) {
         final VirtualFile[] files = e.getRequiredData(CommonDataKeys.VIRTUAL_FILE_ARRAY);
         final Project project = e.getRequiredData(CommonDataKeys.PROJECT);
 
@@ -173,7 +173,7 @@ public class IgnoreFileAction extends DumbAwareAction {
      * @param e action event
      */
     @Override
-    public void update(AnActionEvent e) {
+    public void update(@NotNull AnActionEvent e) {
         final VirtualFile[] files = e.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY);
         final Project project = e.getProject();
 
@@ -192,9 +192,9 @@ public class IgnoreFileAction extends DumbAwareAction {
     @NotNull
     protected String getPath(@NotNull VirtualFile root, @NotNull VirtualFile file) {
         String path = StringUtil.notNullize(Utils.getRelativePath(root, file));
-        path = Utils.escapeChar(path, '[');
-        path = Utils.escapeChar(path, ']');
-        path = Utils.trimLeading(path, '/');
+        path = StringUtil.escapeChar(path, '[');
+        path = StringUtil.escapeChar(path, ']');
+        path = StringUtil.trimLeading(path, '/');
         return path.isEmpty() ? path : '/' + path;
     }
 }

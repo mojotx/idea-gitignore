@@ -32,6 +32,7 @@ import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.ui.GeneratorDialog;
 import mobi.hsz.idea.gitignore.util.CommonDataKeys;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Action that initiates adding new template to the selected .gitignore file.
@@ -52,11 +53,11 @@ public class AddTemplateAction extends AnAction {
      * @param e action event
      */
     @Override
-    public void actionPerformed(AnActionEvent e) {
+    public void actionPerformed(@NotNull AnActionEvent e) {
         final Project project = e.getData(CommonDataKeys.PROJECT);
         final PsiFile file = e.getData(CommonDataKeys.PSI_FILE);
 
-        if (project == null || file == null || !(file instanceof IgnoreFile)) {
+        if (project == null || !(file instanceof IgnoreFile)) {
             return;
         }
 
@@ -70,10 +71,10 @@ public class AddTemplateAction extends AnAction {
      * @param e action event
      */
     @Override
-    public void update(AnActionEvent e) {
+    public void update(@NotNull AnActionEvent e) {
         final PsiFile file = e.getData(CommonDataKeys.PSI_FILE);
 
-        if (file == null || !(file instanceof IgnoreFile)) {
+        if (!(file instanceof IgnoreFile)) {
             e.getPresentation().setVisible(false);
             return;
         }

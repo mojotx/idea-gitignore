@@ -71,8 +71,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.io.IOException;
@@ -179,7 +177,7 @@ public class IgnoreSettingsPanel implements Disposable {
     private ActionLink createLink(@NotNull String title, @NotNull final String url) {
         final ActionLink action = new ActionLink(title, new AnAction() {
             @Override
-            public void actionPerformed(AnActionEvent anActionEvent) {
+            public void actionPerformed(@NotNull AnActionEvent anActionEvent) {
                 BrowserUtil.browse(url);
             }
         });
@@ -374,17 +372,14 @@ public class IgnoreSettingsPanel implements Disposable {
 
         /** Constructs CRUD panel with list listener for editor updating. */
         public TemplatesListPanel() {
-            super(null, ContainerUtil.<IgnoreSettings.UserTemplate>newArrayList());
-            myList.addListSelectionListener(new ListSelectionListener() {
-                @Override
-                public void valueChanged(ListSelectionEvent e) {
-                    boolean enabled = myListModel.size() > 0;
-                    editorPanel.setEnabled(enabled);
+            super(null, ContainerUtil.newArrayList());
+            myList.addListSelectionListener(e -> {
+                boolean enabled = myListModel.size() > 0;
+                editorPanel.setEnabled(enabled);
 
-                    if (enabled) {
-                        IgnoreSettings.UserTemplate template = getCurrentItem();
-                        editorPanel.setContent(template != null ? template.getContent() : "");
-                    }
+                if (enabled) {
+                    IgnoreSettings.UserTemplate template = getCurrentItem();
+                    editorPanel.setContent(template != null ? template.getContent() : "");
                 }
             });
         }
@@ -408,7 +403,7 @@ public class IgnoreSettingsPanel implements Disposable {
             ) {
                 @SuppressWarnings("unchecked")
                 @Override
-                public void actionPerformed(final AnActionEvent event) {
+                public void actionPerformed(@NotNull final AnActionEvent event) {
                     final FileChooserDescriptor descriptor =
                             new FileChooserDescriptor(true, false, true, false, true, false) {
                                 @Override
@@ -443,9 +438,7 @@ public class IgnoreSettingsPanel implements Disposable {
                                     IgnoreBundle.message("action.importTemplates.success", templates.size()),
                                     IgnoreBundle.message("action.exportTemplates.success.title"));
                             return;
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (JDOMException e) {
+                        } catch (IOException | JDOMException e) {
                             e.printStackTrace();
                         }
                     }
@@ -460,7 +453,7 @@ public class IgnoreSettingsPanel implements Disposable {
                     AllIcons.ToolbarDecorator.Export
             ) {
                 @Override
-                public void actionPerformed(AnActionEvent event) {
+                public void actionPerformed(@NotNull AnActionEvent event) {
                     final VirtualFileWrapper wrapper = FileChooserFactory.getInstance().createSaveFileDialog(
                             new FileSaverDescriptor(
                                     IgnoreBundle.message("action.exportTemplates.wrapper"),
@@ -490,7 +483,7 @@ public class IgnoreSettingsPanel implements Disposable {
                 }
 
                 @Override
-                public void update(AnActionEvent e) {
+                public void update(@NotNull AnActionEvent e) {
                     e.getPresentation().setEnabled(getCurrentItems().size() > 0);
                 }
             });
@@ -664,11 +657,11 @@ public class IgnoreSettingsPanel implements Disposable {
             this.preview = Utils.createPreviewEditor(previewDocument, null, false);
             this.preview.getDocument().addDocumentListener(new DocumentListener() {
                 @Override
-                public void beforeDocumentChange(DocumentEvent event) {
+                public void beforeDocumentChange(@NotNull DocumentEvent event) {
                 }
 
                 @Override
-                public void documentChanged(DocumentEvent event) {
+                public void documentChanged(@NotNull DocumentEvent event) {
                     templatesListPanel.updateContent(event.getDocument().getText());
                 }
             });
@@ -699,17 +692,11 @@ public class IgnoreSettingsPanel implements Disposable {
          * @param content new content
          */
         public void setContent(@NotNull final String content) {
-            ApplicationManager.getApplication().runWriteAction(new Runnable() {
-                @Override
-                public void run() {
-                    CommandProcessor.getInstance().runUndoTransparentAction(new Runnable() {
-                        @Override
-                        public void run() {
-                            previewDocument.replaceString(0, previewDocument.getTextLength(), content);
-                        }
-                    });
-                }
-            });
+            ApplicationManager.getApplication().runWriteAction(
+                    () -> CommandProcessor.getInstance().runUndoTransparentAction(
+                            () -> previewDocument.replaceString(0, previewDocument.getTextLength(), content)
+                    )
+            );
         }
     }
 
