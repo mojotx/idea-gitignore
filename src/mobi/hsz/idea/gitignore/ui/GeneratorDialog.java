@@ -62,12 +62,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -131,12 +131,10 @@ public class GeneratorDialog extends DialogWrapper {
     private Document previewDocument;
 
     /** CheckboxTree selection listener. */
-    private TreeSelectionListener treeSelectionListener = new TreeSelectionListener() {
-        public void valueChanged(TreeSelectionEvent e) {
-            final TreePath path = getCurrentPath();
-            if (path != null) {
-                updateDescriptionPanel(path);
-            }
+    private final TreeSelectionListener treeSelectionListener = e -> {
+        final TreePath path = getCurrentPath();
+        if (path != null) {
+            updateDescriptionPanel(path);
         }
     };
 
@@ -232,12 +230,17 @@ public class GeneratorDialog extends DialogWrapper {
      */
     private void performAppendAction(boolean ignoreDuplicates, boolean ignoreComments) {
         final StringBuilder content = new StringBuilder();
-        for (Resources.Template template : checked) {
-            if (template == null) {
-                continue;
+        final Iterator<Resources.Template> iterator = checked.iterator();
+        while (iterator.hasNext()) {
+            final Resources.Template template = iterator.next();
+            if (template != null) {
+                content.append(IgnoreBundle.message("file.templateSection", template.getName()));
+                content.append(Constants.NEWLINE).append(template.getContent());
+
+                if (iterator.hasNext()) {
+                    content.append(Constants.NEWLINE);
+                }
             }
-            content.append(IgnoreBundle.message("file.templateSection", template.getName()));
-            content.append(Constants.NEWLINE).append(template.getContent());
         }
         try {
             if (file == null && action != null) {
@@ -377,19 +380,19 @@ public class GeneratorDialog extends DialogWrapper {
                 null,
                 AllIcons.Actions.Unselectall) {
             @Override
-            public void update(AnActionEvent e) {
+            public void update(@NotNull AnActionEvent e) {
                 e.getPresentation().setEnabled(!checked.isEmpty());
             }
 
             @Override
-            public void actionPerformed(AnActionEvent e) {
+            public void actionPerformed(@NotNull AnActionEvent e) {
                 checked.clear();
                 filterTree(profileFilter.getTextEditor().getText());
             }
         });
         actions.add(new AnAction(IgnoreBundle.message("dialog.generator.star"), null, STAR) {
             @Override
-            public void update(AnActionEvent e) {
+            public void update(@NotNull AnActionEvent e) {
                 final TemplateTreeNode node = getCurrentNode();
                 boolean disabled = node == null || USER.equals(node.getContainer()) || !node.isLeaf();
                 boolean unstar = node != null && STARRED.equals(node.getContainer());
@@ -405,7 +408,7 @@ public class GeneratorDialog extends DialogWrapper {
             }
 
             @Override
-            public void actionPerformed(AnActionEvent e) {
+            public void actionPerformed(@NotNull AnActionEvent e) {
                 final TemplateTreeNode node = getCurrentNode();
                 if (node == null) {
                     return;
@@ -454,23 +457,17 @@ public class GeneratorDialog extends DialogWrapper {
         final TemplateTreeNode node = (TemplateTreeNode) path.getLastPathComponent();
         final Resources.Template template = node.getTemplate();
 
-        ApplicationManager.getApplication().runWriteAction(new Runnable() {
-            @Override
-            public void run() {
-                CommandProcessor.getInstance().runUndoTransparentAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        String content = template != null ?
-                                StringUtil.notNullize(template.getContent()).replace('\r', '\0') : "";
-                        previewDocument.replaceString(0, previewDocument.getTextLength(), content);
+        ApplicationManager.getApplication().runWriteAction(
+                () -> CommandProcessor.getInstance().runUndoTransparentAction(() -> {
+                    String content = template != null ?
+                            StringUtil.notNullize(template.getContent()).replace('\r', '\0') : "";
+                    previewDocument.replaceString(0, previewDocument.getTextLength(), content);
 
-                        List<Pair<Integer, Integer>> pairs =
-                                getFilterRanges(profileFilter.getTextEditor().getText(), content);
-                        highlightWords(pairs);
-                    }
-                });
-            }
-        });
+                    List<Pair<Integer, Integer>> pairs =
+                            getFilterRanges(profileFilter.getTextEditor().getText(), content);
+                    highlightWords(pairs);
+                })
+        );
     }
 
     /**
