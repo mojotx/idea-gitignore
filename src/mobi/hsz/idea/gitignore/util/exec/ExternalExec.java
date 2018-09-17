@@ -115,7 +115,7 @@ public class ExternalExec {
                 file.getParent(),
                 new GitUnignoredFilesOutputParser()
         );
-        return Utils.notNullize(result);
+        return ContainerUtil.notNullize(result);
     }
 
     /**
@@ -132,7 +132,7 @@ public class ExternalExec {
                 vcsRoot.getPath(),
                 new SimpleOutputParser()
         );
-        return Utils.notNullize(result);
+        return ContainerUtil.notNullize(result);
     }
 
     /**
@@ -178,7 +178,7 @@ public class ExternalExec {
     @Nullable
     private static <T> T runForSingle(@NotNull IgnoreLanguage language, @NotNull String command,
                                       @Nullable VirtualFile directory, @NotNull final ExecutionOutputParser<T> parser) {
-        return Utils.getFirstItem(run(language, command, directory, parser));
+        return ContainerUtil.getFirstItem(run(language, command, directory, parser));
     }
 
     /**
@@ -227,7 +227,7 @@ public class ExternalExec {
                 }
 
                 @Override
-                public void notifyTextAvailable(String text, Key outputType) {
+                public void notifyTextAvailable(@NotNull String text, @NotNull Key outputType) {
                     if (parser != null) {
                         parser.onTextAvailable(text, outputType);
                     }

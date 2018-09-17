@@ -122,7 +122,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
     /** Settings related to the {@link IgnoreLanguage}. */
     @NotNull
     @SuppressWarnings("checkstyle:whitespacearound")
-    private IgnoreLanguagesSettings languagesSettings = new IgnoreLanguagesSettings() {{
+    private final IgnoreLanguagesSettings languagesSettings = new IgnoreLanguagesSettings() {{
         for (final IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
             put(language, new TreeMap<KEY, Object>() {{
                 put(KEY.NEW_FILE, true);
@@ -150,8 +150,6 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
      * Get the settings state as a DOM element.
      *
      * @return an ready to serialize DOM {@link Element}.
-     *
-     * @see {@link #loadState(Element)}
      */
     @Nullable
     @Override
@@ -208,10 +206,9 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
      * Load the settings state from the DOM {@link Element}.
      *
      * @param element the {@link Element} to load values from.
-     * @see {@link #getState()}
      */
     @Override
-    public void loadState(Element element) {
+    public void loadState(@NotNull Element element) {
         String value = element.getAttributeValue(KEY.MISSING_GITIGNORE.toString());
         if (value != null) {
             missingGitignore = Boolean.parseBoolean(value);

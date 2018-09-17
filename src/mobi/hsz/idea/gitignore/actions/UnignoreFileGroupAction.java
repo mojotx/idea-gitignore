@@ -39,7 +39,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class UnignoreFileGroupAction extends IgnoreFileGroupAction {
     /** Ignore settings instance. */
-    private IgnoreSettings settings;
+    private final IgnoreSettings settings;
 
     /**
      * Builds a new instance of {@link UnignoreFileGroupAction}.
@@ -73,7 +73,7 @@ public class UnignoreFileGroupAction extends IgnoreFileGroupAction {
      * @param e action event
      */
     @Override
-    public void update(AnActionEvent e) {
+    public void update(@NotNull AnActionEvent e) {
         boolean status = settings.isUnignoreActions();
         e.getPresentation().setVisible(status);
         if (status) {
