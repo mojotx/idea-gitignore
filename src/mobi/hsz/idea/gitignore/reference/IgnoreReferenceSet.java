@@ -25,7 +25,6 @@
 package mobi.hsz.idea.gitignore.reference;
 
 import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VfsUtil;
@@ -113,7 +112,7 @@ public class IgnoreReferenceSet extends FileReferenceSet {
     public Collection<PsiFileSystemItem> computeDefaultContexts() {
         PsiFile containingFile = getElement().getContainingFile();
         PsiDirectory containingDirectory = containingFile.getParent();
-        return containingDirectory != null ? Collections.<PsiFileSystemItem>singletonList(containingDirectory) :
+        return containingDirectory != null ? Collections.singletonList(containingDirectory) :
                 super.computeDefaultContexts();
     }
 
@@ -257,12 +256,7 @@ public class IgnoreReferenceSet extends FileReferenceSet {
                     } else if (current.endsWith(Constants.STAR) && !current.equals(entry.getText())) {
                         files.addAll(ContainerUtil.filter(
                                 context.getVirtualFile().getChildren(),
-                                new Condition<VirtualFile>() {
-                                    @Override
-                                    public boolean value(VirtualFile virtualFile) {
-                                        return virtualFile.isDirectory();
-                                    }
-                                }
+                                VirtualFile::isDirectory
                         ));
                     } else if (current.endsWith(Constants.DOUBLESTAR)) {
                         final String key = entry.getText();
