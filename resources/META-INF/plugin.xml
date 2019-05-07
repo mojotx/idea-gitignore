@@ -75,7 +75,7 @@
 
     <change-notes><![CDATA[
 
-        <a href="https://github.com/hsz/idea-gitignore/tree/v3.1.0"><b>v3.1.0</b></a> (unreleased) <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/tree/v3.1.0"><b>v3.1.0</b></a> (2019-05-08) <br/><br/>
         <a href="https://github.com/hsz/idea-gitignore/compare/v3.0.0...v3.1.0"><small>Full Changelog</small></a> <br/><br/>
 
         <i>Implemented enhancements:</i>
@@ -83,12 +83,15 @@
             <li>.gcloudignore (Google Cloud) support (<a href="https://github.com/hsz/idea-gitignore/issues/577">577</a>)</li>
             <li>.nuxtignore (Nuxt.js) support (<a href="https://github.com/hsz/idea-gitignore/issues/576">576</a>)</li>
             <li>Fixed deprecation warnings (<a href="https://github.com/hsz/idea-gitignore/issues/567">567</a>)</li>
+            <li>Removed "tracked & ignored" feature (<a href="https://github.com/hsz/idea-gitignore/issues/547">547</a>, <a href="https://github.com/hsz/idea-gitignore/issues/523">523</a>, <a href="https://github.com/hsz/idea-gitignore/issues/528">528</a>, <a href="https://github.com/hsz/idea-gitignore/issues/486">486</a>)</li>
         </ul>
 
         <i>Fixed bugs:</i>
 
         <ul>
             <li>Adding 2+ templates without new line in between (<a href="https://github.com/hsz/idea-gitignore/issues/561">561</a>)</li>
+            <li>Fixed incorrect relative path resolving for ignored files (<a href="https://github.com/hsz/idea-gitignore/issues/566">566</a>)</li>
+            <li>Fixed "is covered by" false-positive behaviour (<a href="https://github.com/hsz/idea-gitignore/issues/565">565</a>, <a href="https://github.com/hsz/idea-gitignore/issues/228">228</a>)</li>
         </ul>
 
         <a href="https://github.com/hsz/idea-gitignore/blob/master/CHANGELOG.md"><b>Full Changelog History</b></a>
@@ -548,10 +551,6 @@
             <implementation-class>mobi.hsz.idea.gitignore.IgnoreUpdateComponent</implementation-class>
         </component>
         <component>
-            <implementation-class>mobi.hsz.idea.gitignore.TrackedIgnoredFilesComponent</implementation-class>
-            <loadForDefaultProject/>
-        </component>
-        <component>
             <implementation-class>mobi.hsz.idea.gitignore.IgnoreFileBasedIndexProjectHandler</implementation-class>
         </component>
     </project-components>
@@ -588,10 +587,6 @@
         </action>
 
         <action id="HideIgnoredFiles" class="mobi.hsz.idea.gitignore.actions.HideIgnoredFilesAction">
-            <add-to-group group-id="ProjectViewPopupMenu"/>
-        </action>
-
-        <action id="HandleTrackedIgnoredFiles" class="mobi.hsz.idea.gitignore.actions.HandleTrackedIgnoredFilesAction">
             <add-to-group group-id="ProjectViewPopupMenu"/>
         </action>
     </actions>
