@@ -1,7 +1,7 @@
 Change Log
 ----------
 
-### [v3.1.0](https://github.com/hsz/idea-gitignore/tree/v3.1.0) (unreleased)
+### [v3.1.0](https://github.com/hsz/idea-gitignore/tree/v3.1.0) (2019-05-08)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v3.0.0...v3.1.0)
 
@@ -10,10 +10,13 @@ Change Log
 - .gcloudignore (Google Cloud) support [\#577](https://github.com/hsz/idea-gitignore/issues/577)
 - .nuxtignore (Nuxt.js) support [\#576](https://github.com/hsz/idea-gitignore/issues/576)
 - Fixed deprecation warnings [\#567](https://github.com/hsz/idea-gitignore/issues/567)
+- Removed "tracked & ignored" feature [\#547](https://github.com/hsz/idea-gitignore/issues/547) [\#523](https://github.com/hsz/idea-gitignore/issues/523) [\#528](https://github.com/hsz/idea-gitignore/issues/528) [\#486](https://github.com/hsz/idea-gitignore/issues/486)
 
 **Fixed bugs:**
 
 - Adding 2+ templates without new line in between [\#561](https://github.com/hsz/idea-gitignore/issues/561)
+- Fixed incorrect relative path resolving for ignored files [\#566](https://github.com/hsz/idea-gitignore/issues/566)
+- Fixed "is covered by" false-positive behaviour [\#565](https://github.com/hsz/idea-gitignore/issues/565) [\#228](https://github.com/hsz/idea-gitignore/issues/228)
 
 
 ### [v3.0.0](https://github.com/hsz/idea-gitignore/tree/v3.0.0) (2018-07-24)

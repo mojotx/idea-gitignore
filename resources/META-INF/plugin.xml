@@ -79,22 +79,15 @@
 
     <change-notes><![CDATA[
 
-        <a href="https://github.com/hsz/idea-gitignore/tree/v3.0.0"><b>v3.0.0</b></a> (2018-07-24) <br/><br/>
-        <a href="https://github.com/hsz/idea-gitignore/compare/v2.6.2...v3.0.0"><small>Full Changelog</small></a> <br/><br/>
-
-        <i>Implemented enhancements:</i>
-
-        <ul>
-            <li>Separated builds for different IDE versions (139-181+)</li>
-            <li>Abandoned support for <139</li>
-            <li>Integration with IntelliJ Plugin Verifier</li>
-        </ul>
+        <a href="https://github.com/hsz/idea-gitignore/tree/v3.1.0"><b>v3.1.0</b></a> (2019-05-08) <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/compare/v3.0.0...v3.1.0"><small>Full Changelog</small></a> <br/><br/>
 
         <i>Implemented enhancements:</i>
         <ul>
             <li>.gcloudignore (Google Cloud) support (<a href="https://github.com/hsz/idea-gitignore/issues/577">577</a>)</li>
             <li>.nuxtignore (Nuxt.js) support (<a href="https://github.com/hsz/idea-gitignore/issues/576">576</a>)</li>
             <li>Fixed deprecation warnings (<a href="https://github.com/hsz/idea-gitignore/issues/567">567</a>)</li>
+            <li>Removed "tracked & ignored" feature (<a href="https://github.com/hsz/idea-gitignore/issues/547">547</a>, <a href="https://github.com/hsz/idea-gitignore/issues/523">523</a>, <a href="https://github.com/hsz/idea-gitignore/issues/528">528</a>, <a href="https://github.com/hsz/idea-gitignore/issues/486">486</a>)</li>
         </ul>
 
         <i>Fixed bugs:</i>
@@ -103,6 +96,8 @@
             <li>Argument for @NotNull parameter 'settings' of HideIgnoredFilesTreeStructureProvider.modify must not be null (<a href="https://github.com/hsz/idea-gitignore/issues/551">551</a>)</li>
             <li>Projects leak in ExternalIndexableSetContributor.CACHE (<a href="https://github.com/hsz/idea-gitignore/issues/553">553</a>)</li>
             <li>Unable to save settings (<a href="https://github.com/hsz/idea-gitignore/issues/552">552</a>)</li>
+            <li>Fixed incorrect relative path resolving for ignored files (<a href="https://github.com/hsz/idea-gitignore/issues/566">566</a>)</li>
+            <li>Fixed "is covered by" false-positive behaviour (<a href="https://github.com/hsz/idea-gitignore/issues/565">565</a>, <a href="https://github.com/hsz/idea-gitignore/issues/228">228</a>)</li>
         </ul>
 
         <a href="https://github.com/hsz/idea-gitignore/blob/master/CHANGELOG.md"><b>Full Changelog History</b></a>
@@ -589,10 +584,6 @@
             <implementation-class>mobi.hsz.idea.gitignore.IgnoreUpdateComponent</implementation-class>
         </component>
         <component>
-            <implementation-class>mobi.hsz.idea.gitignore.TrackedIgnoredFilesComponent</implementation-class>
-            <loadForDefaultProject/>
-        </component>
-        <component>
             <implementation-class>mobi.hsz.idea.gitignore.IgnoreFileBasedIndexProjectHandler</implementation-class>
         </component>
     </project-components>
@@ -629,10 +620,6 @@
         </action>
 
         <action id="HideIgnoredFiles" class="mobi.hsz.idea.gitignore.actions.HideIgnoredFilesAction">
-            <add-to-group group-id="ProjectViewPopupMenu"/>
-        </action>
-
-        <action id="HandleTrackedIgnoredFiles" class="mobi.hsz.idea.gitignore.actions.HandleTrackedIgnoredFilesAction">
             <add-to-group group-id="ProjectViewPopupMenu"/>
         </action>
     </actions>
