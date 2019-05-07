@@ -63,6 +63,10 @@ public class AddUnversionedFilesNotificationProvider extends EditorNotifications
     @NotNull
     private static final Key<EditorNotificationPanel> KEY = Key.create("AddUnversionedFilesNotificationProvider");
 
+    /** Current project. */
+    @NotNull
+    private final Project project;
+
     /** Notifications component. */
     @NotNull
     private final EditorNotifications notifications;
@@ -81,9 +85,12 @@ public class AddUnversionedFilesNotificationProvider extends EditorNotifications
     /**
      * Builds a new instance of {@link AddUnversionedFilesNotificationProvider}.
      *
+     * @param project       current project
      * @param notifications notifications component
      */
-    public AddUnversionedFilesNotificationProvider(@NotNull EditorNotifications notifications) {
+    public AddUnversionedFilesNotificationProvider(@NotNull Project project,
+                                                   @NotNull EditorNotifications notifications) {
+        this.project = project;
         this.notifications = notifications;
         this.settings = IgnoreSettings.getInstance();
     }
@@ -109,8 +116,7 @@ public class AddUnversionedFilesNotificationProvider extends EditorNotifications
      */
     @Nullable
     @Override
-    public EditorNotificationPanel createNotificationPanel(@NotNull VirtualFile file, @NotNull FileEditor fileEditor,
-                                                           @NotNull Project project) {
+    public EditorNotificationPanel createNotificationPanel(@NotNull VirtualFile file, @NotNull FileEditor fileEditor) {
         // Break if feature is disabled in the Settings
         if (!settings.isAddUnversionedFiles()) {
             return null;

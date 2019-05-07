@@ -112,8 +112,7 @@ public class MissingGitignoreNotificationProvider extends EditorNotifications.Pr
      */
     @Nullable
     @Override
-    public EditorNotificationPanel createNotificationPanel(@NotNull VirtualFile file, @NotNull FileEditor fileEditor,
-                                                           @NotNull Project project) {
+    public EditorNotificationPanel createNotificationPanel(@NotNull VirtualFile file, @NotNull FileEditor fileEditor) {
         // Break if feature is disabled in the Settings
         if (!settings.isMissingGitignore()) {
             return null;

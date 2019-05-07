@@ -24,6 +24,7 @@
 
 package mobi.hsz.idea.gitignore.daemon;
 
+import com.intellij.codeHighlighting.Pass;
 import com.intellij.codeInsight.daemon.LineMarkerInfo;
 import com.intellij.codeInsight.daemon.LineMarkerProvider;
 import com.intellij.openapi.editor.markup.GutterIconRenderer;
@@ -97,7 +98,7 @@ public class IgnoreDirectoryMarkerProvider implements LineMarkerProvider {
 
         if (isDirectory) {
             return new LineMarkerInfo<>(element.getFirstChild(), element.getTextRange(),
-                    PlatformIcons.FOLDER_ICON, null, null, GutterIconRenderer.Alignment.CENTER);
+                    PlatformIcons.FOLDER_ICON, Pass.UPDATE_ALL, null, null, GutterIconRenderer.Alignment.CENTER);
         }
         return null;
     }
