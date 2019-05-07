@@ -157,7 +157,11 @@ public class AddUnversionedFilesNotificationProvider extends EditorNotifications
         panel.createActionLabel(IgnoreBundle.message("daemon.addUnversionedFiles.create"), new Runnable() {
             @Override
             public void run() {
-                final VirtualFile virtualFile = project.getBaseDir().findChild(GitLanguage.INSTANCE.getFilename());
+                final VirtualFile projectDir = project.getBaseDir();
+            if (projectDir == null) {
+                return;
+            }
+            final VirtualFile virtualFile = projectDir.findChild(GitLanguage.INSTANCE.getFilename());
                 final PsiFile file = virtualFile != null ? PsiManager.getInstance(project).findFile(virtualFile) : null;
                 if (file != null) {
                     final String content = StringUtil.join(unignoredFiles, Constants.NEWLINE);

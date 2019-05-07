@@ -50,6 +50,10 @@ public class GitExcludeFileType extends IgnoreFileType {
     @Nullable
     public static VirtualFile getWorkingDirectory(@NotNull Project project, @NotNull VirtualFile outerFile) {
         final VirtualFile baseDir = project.getBaseDir();
+        if (baseDir == null) {
+            return null;
+        }
+
         final VirtualFile infoDir = baseDir.findFileByRelativePath(".git/info");
         if (infoDir != null && Utils.isUnder(outerFile, infoDir)) {
             return baseDir;

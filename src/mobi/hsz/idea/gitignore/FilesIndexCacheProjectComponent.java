@@ -53,6 +53,9 @@ import java.util.regex.Pattern;
  * @since 1.3.1
  */
 public class FilesIndexCacheProjectComponent extends AbstractProjectComponent {
+    /** Current project. */
+    private final Project project;
+
     /** Concurrent cache map. */
     @NotNull
     private final ConcurrentMap<String, Collection<VirtualFile>> cacheMap;
@@ -127,9 +130,10 @@ public class FilesIndexCacheProjectComponent extends AbstractProjectComponent {
      */
     protected FilesIndexCacheProjectComponent(@NotNull final Project project) {
         super(project);
-        cacheMap = ContainerUtil.newConcurrentMap();
-        virtualFileManager = VirtualFileManager.getInstance();
-        projectFileIndex = ProjectRootManager.getInstance(project).getFileIndex();
+        this.project = project;
+        this.cacheMap = ContainerUtil.newConcurrentMap();
+        this.virtualFileManager = VirtualFileManager.getInstance();
+        this.projectFileIndex = ProjectRootManager.getInstance(project).getFileIndex();
     }
 
     /** Registers {@link #virtualFileListener} when project is opened. */

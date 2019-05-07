@@ -51,6 +51,9 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class TrackedIgnoredFilesComponent extends AbstractProjectComponent
         implements IgnoreManager.TrackedIgnoredListener {
+    /** Current project. */
+    private final Project project;
+
     /** Disable action event. */
     @NonNls
     private static final String DISABLE_ACTION = "#disable";
@@ -71,13 +74,14 @@ public class TrackedIgnoredFilesComponent extends AbstractProjectComponent
      */
     protected TrackedIgnoredFilesComponent(@NotNull Project project) {
         super(project);
+        this.project = project;
     }
 
     /** Component initialization method. */
     @Override
     public void initComponent() {
         settings = IgnoreSettings.getInstance();
-        messageBus = myProject.getMessageBus().connect();
+        messageBus = project.getMessageBus().connect();
         messageBus.subscribe(IgnoreManager.TrackedIgnoredListener.TRACKED_IGNORED, this);
     }
 
@@ -107,13 +111,13 @@ public class TrackedIgnoredFilesComponent extends AbstractProjectComponent
      */
     @Override
     public void handleFiles(@NotNull final ConcurrentMap<VirtualFile, VcsRoot> files) {
-        if (!settings.isInformTrackedIgnored() || notificationShown || myProject.getBaseDir() == null) {
+        if (!settings.isInformTrackedIgnored() || notificationShown) {
             return;
         }
 
         notificationShown = true;
         Notify.show(
-                myProject,
+                project,
                 IgnoreBundle.message("notification.untrack.title", Utils.getVersion()),
                 IgnoreBundle.message("notification.untrack.content"),
                 NotificationType.INFORMATION,
@@ -122,8 +126,8 @@ public class TrackedIgnoredFilesComponent extends AbstractProjectComponent
                     public void hyperlinkUpdate(@NotNull Notification notification, @NotNull HyperlinkEvent event) {
                         if (DISABLE_ACTION.equals(event.getDescription())) {
                             settings.setInformTrackedIgnored(false);
-                        } else if (!myProject.isDisposed()) {
-                            new UntrackFilesDialog(myProject, files).show();
+                        } else if (!project.isDisposed()) {
+                            new UntrackFilesDialog(project, files).show();
                         }
                         notification.expire();
                     }

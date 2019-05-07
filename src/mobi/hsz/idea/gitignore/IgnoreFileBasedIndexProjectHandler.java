@@ -49,6 +49,9 @@ import static mobi.hsz.idea.gitignore.IgnoreManager.RefreshStatusesListener.REFR
  * @since 2.0
  */
 public class IgnoreFileBasedIndexProjectHandler extends AbstractProjectComponent implements IndexableFileSet {
+    /** Current project. */
+    private final Project project;
+
     /** {@link ProjectManager} instance. */
     @NotNull
     private final ProjectManager projectManager;
@@ -75,25 +78,26 @@ public class IgnoreFileBasedIndexProjectHandler extends AbstractProjectComponent
     public IgnoreFileBasedIndexProjectHandler(@NotNull final Project project, @NotNull ProjectManager projectManager,
                                               @NotNull final FileBasedIndex index) {
         super(project);
+        this.project = project;
         this.projectManager = projectManager;
         this.index = index;
 
-        StartupManager.getInstance(myProject).registerPreStartupActivity(new Runnable() {
+        StartupManager.getInstance(project).registerPreStartupActivity(new Runnable() {
             public void run() {
                 index.registerIndexableSet(IgnoreFileBasedIndexProjectHandler.this, project);
-                myProject.getMessageBus().syncPublisher(REFRESH_STATUSES).refresh();
+                project.getMessageBus().syncPublisher(REFRESH_STATUSES).refresh();
             }
         });
     }
 
     /** Initialize component and add {@link #projectListener}. */
     public void initComponent() {
-        projectManager.addProjectManagerListener(myProject, projectListener);
+        projectManager.addProjectManagerListener(project, projectListener);
     }
 
     /** Dispose component and remove {@link #projectListener}. */
     public void disposeComponent() {
-        projectManager.removeProjectManagerListener(myProject, projectListener);
+        projectManager.removeProjectManagerListener(project, projectListener);
     }
 
     /**
@@ -105,7 +109,7 @@ public class IgnoreFileBasedIndexProjectHandler extends AbstractProjectComponent
     @Override
     public boolean isInSet(@NotNull VirtualFile file) {
         return file.getFileType() instanceof IgnoreFileType &&
-                ExternalIndexableSetContributor.getAdditionalFiles(myProject).contains(file);
+                ExternalIndexableSetContributor.getAdditionalFiles(project).contains(file);
     }
 
     /**

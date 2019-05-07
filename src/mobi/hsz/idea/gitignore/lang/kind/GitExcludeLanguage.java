@@ -149,6 +149,10 @@ public class GitExcludeLanguage extends IgnoreLanguage {
     @Nullable
     @Override
     public VirtualFile getFixedDirectory(@NotNull Project project) {
-        return project.getBaseDir().findFileByRelativePath(getVcsDirectory() + "/info");
+        final VirtualFile projectDir = project.getBaseDir();
+        if (projectDir == null) {
+            return null;
+        }
+        return projectDir.findFileByRelativePath(getVcsDirectory() + "/info");
     }
 }

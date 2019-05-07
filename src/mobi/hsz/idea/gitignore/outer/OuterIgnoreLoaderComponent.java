@@ -53,6 +53,9 @@ import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.KEY;
  * @since 1.1
  */
 public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
+    /** Current project. */
+    private final Project project;
+
     /** MessageBus instance. */
     private MessageBusConnection messageBus;
 
@@ -70,6 +73,7 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
     /** Constructor. */
     public OuterIgnoreLoaderComponent(@NotNull final Project project) {
         super(project);
+        this.project = project;
     }
 
     /**
@@ -87,8 +91,8 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
     /** Initializes component. */
     @Override
     public void initComponent() {
-        messageBus = myProject.getMessageBus().connect();
-        messageBus.subscribe(FileEditorManagerListener.FILE_EDITOR_MANAGER, new IgnoreEditorManagerListener(myProject));
+        messageBus = project.getMessageBus().connect();
+        messageBus.subscribe(FileEditorManagerListener.FILE_EDITOR_MANAGER, new IgnoreEditorManagerListener(project));
     }
 
     @Override
@@ -131,7 +135,7 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
                 @Override
                 public void run() {
                     final List<VirtualFile> outerFiles =
-                            ContainerUtil.newArrayList(language.getOuterFiles(myProject, false));
+                            ContainerUtil.newArrayList(language.getOuterFiles(project, false));
                     if (outerFiles.isEmpty() || outerFiles.contains(file)) {
                         return;
                     }

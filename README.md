@@ -40,6 +40,7 @@ Introduction
 - `.upignore` (Up)
 - `.prettierignore` (Prettier)
 - `.ebignore` (ElasticBeanstalk)
+- `.gcloudignore` (Google Cloud)
 
 files in your project. It supports following JetBrains IDEs:
 
@@ -137,6 +138,12 @@ Changelog
 - Separated builds for different IDE versions (139-181+)
 - Abandoned support for <139
 - Integration with IntelliJ Plugin Verifier
+
+**Implemented enhancements:**
+
+- .gcloudignore (Google Cloud) support [\#577](https://github.com/hsz/idea-gitignore/issues/577)
+- .nuxtignore (Nuxt.js) support [\#576](https://github.com/hsz/idea-gitignore/issues/576)
+- Fixed deprecation warnings [\#567](https://github.com/hsz/idea-gitignore/issues/567)
 
 **Fixed bugs:**
 

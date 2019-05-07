@@ -69,10 +69,4 @@ public class SyntaxCompletionContributor extends CompletionContributor {
                 }
         );
     }
-
-    /** Allow autoPopup to appear after custom symbol. */
-    @Override
-    public boolean invokeAutoPopup(@NotNull PsiElement position, char typeChar) {
-        return true;
-    }
 }

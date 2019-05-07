@@ -36,6 +36,9 @@ import org.jetbrains.annotations.NotNull;
  * @since 1.3
  */
 public class IgnoreUpdateComponent extends AbstractProjectComponent {
+    /** Current project. */
+    private final Project project;
+
     /** {@link IgnoreApplicationComponent} instance. */
     private IgnoreApplicationComponent application;
 
@@ -46,6 +49,7 @@ public class IgnoreUpdateComponent extends AbstractProjectComponent {
      */
     protected IgnoreUpdateComponent(@NotNull Project project) {
         super(project);
+        this.project = project;
     }
 
     /** Component initialization method. */
@@ -76,7 +80,7 @@ public class IgnoreUpdateComponent extends AbstractProjectComponent {
     public void projectOpened() {
         if (application.isUpdated() && !application.isRC() && !application.isUpdateNotificationShown()) {
             application.setUpdateNotificationShown(true);
-            Notify.showUpdate(myProject);
+            Notify.showUpdate(project);
         }
     }
 }
