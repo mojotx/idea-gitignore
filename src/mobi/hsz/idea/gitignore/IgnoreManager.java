@@ -35,10 +35,7 @@ import com.intellij.openapi.fileTypes.ExactFileNameMatcher;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.fileTypes.FileTypeManager;
 import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.project.DumbAware;
-import com.intellij.openapi.project.DumbService;
-import com.intellij.openapi.project.NoAccessDuringPsiEvents;
-import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.*;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vcs.FileStatusManager;
@@ -354,7 +351,7 @@ public class IgnoreManager implements DumbAware, ProjectComponent {
                     if (workingDirectory == null || !Utils.isUnder(file, workingDirectory)) {
                         continue;
                     }
-                    relativePath = StringUtil.trimStart(file.getPath(), workingDirectory.getPath());
+                    relativePath = Utils.getRelativePath(workingDirectory, file);
                 } else {
                     final VirtualFile vcsRoot = getVcsRootFor(file);
                     if (vcsRoot != null && !Utils.isUnder(entryFile, vcsRoot)) {
@@ -363,15 +360,19 @@ public class IgnoreManager implements DumbAware, ProjectComponent {
                         }
                     }
 
-                    final String parentPath = !Utils.isInProject(entryFile, project) &&
-                            project.getBasePath() != null ? project.getBasePath() : entryFile.getParent().getPath();
-                    if (!StringUtil.startsWith(file.getPath(), parentPath) &&
+                    final VirtualFile projectDir = ProjectUtil.guessProjectDir(project);
+                    final VirtualFile parent = !Utils.isInProject(entryFile, project) && projectDir != null
+                            ? projectDir : entryFile.getParent();
+                    if (!StringUtil.startsWith(file.getPath(), parent.getPath()) &&
                             !ExternalIndexableSetContributor.getAdditionalFiles(project).contains(entryFile)) {
                         continue;
                     }
-                    relativePath = StringUtil.trimStart(file.getPath(), parentPath);
+                    relativePath = Utils.getRelativePath(parent, file);
                 }
 
+                if (relativePath == null) {
+                    continue;
+                }
                 relativePath = StringUtil.trimEnd(StringUtil.trimStart(relativePath, "/"), "/");
                 if (StringUtil.isEmpty(relativePath)) {
                     continue;
@@ -452,8 +453,8 @@ public class IgnoreManager implements DumbAware, ProjectComponent {
      * @return file is ignored and tracked
      */
     public boolean isFileTracked(@NotNull final VirtualFile file) {
-        return settings.isInformTrackedIgnored() && !notConfirmedIgnoredFiles.contains(file) &&
-                !confirmedIgnoredFiles.isEmpty() && confirmedIgnoredFiles.containsKey(file);
+        return !notConfirmedIgnoredFiles.contains(file) && !confirmedIgnoredFiles.isEmpty() &&
+                confirmedIgnoredFiles.containsKey(file);
     }
 
     /**
@@ -560,16 +561,6 @@ public class IgnoreManager implements DumbAware, ProjectComponent {
         }
     }
 
-    /**
-     * Returns tracked and ignored files stored in {@link #confirmedIgnoredFiles}.
-     *
-     * @return tracked and ignored files map
-     */
-    @NotNull
-    public ConcurrentMap<VirtualFile, VcsRoot> getConfirmedIgnoredFiles() {
-        return confirmedIgnoredFiles;
-    }
-
     /** {@link Runnable} implementation to rebuild {@link #confirmedIgnoredFiles}. */
     class RefreshTrackedIgnoredRunnable implements Runnable, IgnoreManager.RefreshTrackedIgnoredListener {
         /** Default {@link Runnable} run method that invokes rebuilding with bus event propagating. */
@@ -590,10 +581,6 @@ public class IgnoreManager implements DumbAware, ProjectComponent {
          * @param silent propagate {@link IgnoreManager.TrackedIgnoredListener#TRACKED_IGNORED} event
          */
         public void run(boolean silent) {
-            if (!settings.isInformTrackedIgnored()) {
-                return;
-            }
-
             final ConcurrentMap<VirtualFile, VcsRoot> result = ContainerUtil.newConcurrentMap();
             for (VcsRoot vcsRoot : vcsRoots) {
                 if (!(vcsRoot.getVcs() instanceof GitVcs) || vcsRoot.getPath() == null) {
