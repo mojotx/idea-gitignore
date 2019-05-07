@@ -28,6 +28,7 @@ import com.intellij.codeHighlighting.Pass;
 import com.intellij.codeInsight.daemon.LineMarkerInfo;
 import com.intellij.codeInsight.daemon.LineMarkerProvider;
 import com.intellij.openapi.editor.markup.GutterIconRenderer;
+import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
@@ -79,11 +80,16 @@ public class IgnoreDirectoryMarkerProvider implements LineMarkerProvider {
             } else {
                 final IgnoreEntryFile entry = (IgnoreEntryFile) element;
                 final VirtualFile parent = element.getContainingFile().getVirtualFile().getParent();
-                final Project project = element.getProject();
-                final VirtualFile projectDir = project.getBaseDir();
-                if (parent == null || projectDir == null || !Utils.isUnder(parent, projectDir)) {
+                if (parent == null) {
                     return null;
                 }
+
+                final Project project = element.getProject();
+                final Module module = Utils.getModuleForFile(parent, project);
+                if (module == null) {
+                    return null;
+                }
+
                 final MatcherUtil matcher = IgnoreManager.getInstance(project).getMatcher();
                 final VirtualFile file = Glob.findOne(parent, entry, matcher);
                 cache.put(key, isDirectory = file != null && file.isDirectory());
