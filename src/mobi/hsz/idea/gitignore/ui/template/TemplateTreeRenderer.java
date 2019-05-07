@@ -64,7 +64,7 @@ public abstract class TemplateTreeRenderer extends CheckboxTree.CheckboxTreeCell
 
         final Color background = selected ? UIUtil.getTreeSelectionBackground(true) : UIUtil.getTreeBackground();
         UIUtil.changeBackGround(this, background);
-        Color foreground = selected ? UIUtil.getTreeSelectionForeground(true) : node.getTemplate() == null ?
+        Color foreground = selected ? UIUtil.getTreeSelectionForeground() : node.getTemplate() == null ?
                 PlatformColors.BLUE : UIUtil.getTreeForeground();
         int style = SimpleTextAttributes.STYLE_PLAIN;
 

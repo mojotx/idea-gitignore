@@ -600,8 +600,8 @@ public class GeneratorDialog extends DialogWrapper {
      */
     private void highlightWords(@NotNull List<Pair<Integer, Integer>> pairs) {
         final TextAttributes attr = new TextAttributes();
-        attr.setBackgroundColor(UIUtil.getTreeSelectionBackground(true));
-        attr.setForegroundColor(UIUtil.getTreeSelectionForeground(true));
+        attr.setBackgroundColor(UIUtil.getTreeSelectionBackground());
+        attr.setForegroundColor(UIUtil.getTreeSelectionForeground());
 
         for (Pair<Integer, Integer> pair : pairs) {
             preview.getMarkupModel().addRangeHighlighter(pair.first, pair.second, 0, attr,
