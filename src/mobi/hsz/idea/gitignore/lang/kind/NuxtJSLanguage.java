@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2018 hsz Jakub Chrzanowski <jakub@hsz.mobi>
+ * Copyright (c) 2019 hsz Jakub Chrzanowski <jakub@hsz.mobi>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,69 +24,45 @@
 
 package mobi.hsz.idea.gitignore.lang.kind;
 
-import com.intellij.openapi.project.ProjectUtil;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.file.type.kind.FossilFileType;
+import mobi.hsz.idea.gitignore.file.type.kind.NuxtJSFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
-import mobi.hsz.idea.gitignore.outer.OuterIgnoreLoaderComponent.OuterFileFetcher;
 import mobi.hsz.idea.gitignore.util.Icons;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Fossil {@link IgnoreLanguage} definition.
+ * NuxtJS {@link IgnoreLanguage} definition.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 1.1
+ * @since 3.1
  */
-public class FossilLanguage extends IgnoreLanguage {
-    /** The {@link FossilLanguage} instance. */
-    public static final FossilLanguage INSTANCE = new FossilLanguage();
+public class NuxtJSLanguage extends IgnoreLanguage {
+    /** The {@link NuxtJSLanguage} instance. */
+    public static final NuxtJSLanguage INSTANCE = new NuxtJSLanguage();
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
-    private FossilLanguage() {
-        super("Fossil", "ignore-glob", ".fossil-settings", Icons.FOSSIL, new OuterFileFetcher[]{
-
-                // Outer file fetched from the .fossil-settings/ignore-glob file.
-                project -> {
-                    final VirtualFile baseDir = ProjectUtil.guessProjectDir(project);
-                    return ContainerUtil.createMaybeSingletonList(baseDir == null ? null : baseDir
-                            .findFileByRelativePath(INSTANCE.getVcsDirectory() + "/" + INSTANCE.getFilename()));
-                }
-
-        });
+    private NuxtJSLanguage() {
+        super("NuxtJS", "nuxtignore", null, Icons.NUXTJS);
     }
 
     /**
      * Language file type.
      *
-     * @return {@link FossilFileType} instance
+     * @return {@link NuxtJSFileType} instance
      */
     @NotNull
     @Override
     public IgnoreFileType getFileType() {
-        return FossilFileType.INSTANCE;
+        return NuxtJSFileType.INSTANCE;
     }
 
     /**
-     * The Gitignore file extension.
+     * Language is related to the VCS.
      *
-     * @return filename
-     */
-    @NotNull
-    @Override
-    public String getFilename() {
-        return getExtension();
-    }
-
-    /**
-     * Defines if {@link FossilLanguage} supports outer ignore files.
-     *
-     * @return supports outer ignore files
+     * @return is VCS
      */
     @Override
-    public boolean isOuterFileSupported() {
-        return true;
+    public boolean isVCS() {
+        return false;
     }
 }

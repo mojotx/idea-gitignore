@@ -26,6 +26,7 @@ package mobi.hsz.idea.gitignore.daemon;
 
 import com.intellij.openapi.fileEditor.FileEditor;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -154,7 +155,11 @@ public class AddUnversionedFilesNotificationProvider extends EditorNotifications
         final IgnoreFileType fileType = GitFileType.INSTANCE;
         panel.setText(IgnoreBundle.message("daemon.addUnversionedFiles"));
         panel.createActionLabel(IgnoreBundle.message("daemon.addUnversionedFiles.create"), () -> {
-            final VirtualFile virtualFile = project.getBaseDir().findChild(GitLanguage.INSTANCE.getFilename());
+            final VirtualFile projectDir = ProjectUtil.guessProjectDir(project);
+            if (projectDir == null) {
+                return;
+            }
+            final VirtualFile virtualFile = projectDir.findChild(GitLanguage.INSTANCE.getFilename());
             final PsiFile file = virtualFile != null ? PsiManager.getInstance(project).findFile(virtualFile) : null;
             if (file != null) {
                 final String content = StringUtil.join(unignoredFiles, Constants.NEWLINE);

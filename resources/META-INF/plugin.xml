@@ -41,7 +41,8 @@
         .helmignore (Kubernetes Helm),
         .upignore (Up),
         .prettierignore (Prettier),
-        .ebignore (ElasticBeanstalk)
+        .ebignore (ElasticBeanstalk),
+        .gcloudignore (Google Cloud)
       </i>files in your project.
       <br/>
       <br/>
@@ -77,6 +78,13 @@
         <a href="https://github.com/hsz/idea-gitignore/tree/v3.1.0"><b>v3.1.0</b></a> (unreleased) <br/><br/>
         <a href="https://github.com/hsz/idea-gitignore/compare/v3.0.0...v3.1.0"><small>Full Changelog</small></a> <br/><br/>
 
+        <i>Implemented enhancements:</i>
+        <ul>
+            <li>.gcloudignore (Google Cloud) support (<a href="https://github.com/hsz/idea-gitignore/issues/577">577</a>)</li>
+            <li>.nuxtignore (Nuxt.js) support (<a href="https://github.com/hsz/idea-gitignore/issues/576">576</a>)</li>
+            <li>Fixed deprecation warnings (<a href="https://github.com/hsz/idea-gitignore/issues/567">567</a>)</li>
+        </ul>
+
         <i>Fixed bugs:</i>
 
         <ul>
@@ -88,7 +96,6 @@
     ]]>
     </change-notes>
 
-    <idea-version since-build="139"/>
     <depends>com.intellij.modules.lang</depends>
     <depends optional="true">Git4Idea</depends>
 
@@ -336,6 +343,17 @@
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Git exclude -->
 
+        <!-- Google Cloud -->
+        <lang.parserDefinition language="Google Cloud"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <codeInsight.lineMarkerProvider language="Google Cloud"
+                                        implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher language="Google Cloud" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter language="Google Cloud" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory language="Google Cloud"
+                                       implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <!-- END Google Cloud -->
+
         <!-- Jetpack -->
         <lang.parserDefinition language="Jetpack"
                                implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
@@ -413,6 +431,17 @@
         <lang.syntaxHighlighterFactory language="Npm"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Npm -->
+
+        <!-- NuxtJS -->
+        <lang.parserDefinition language="NuxtJS"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <codeInsight.lineMarkerProvider language="NuxtJS"
+                                        implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher language="NuxtJS" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter language="NuxtJS" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory language="NuxtJS"
+                                       implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <!-- END NuxtJS -->
 
         <!-- Perforce -->
         <lang.parserDefinition language="Perforce"

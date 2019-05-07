@@ -65,6 +65,9 @@ public class Icons {
     /** Git icon. */
     public static final Icon GIT = IconLoader.getIcon("/icons/icon_git.png");
 
+    /** Google Cloud icon. */
+    public static final Icon GCLOUD = IconLoader.getIcon("/icons/icon_gcloud.png");
+
     /** Kubernetes Helm icon. */
     public static final Icon HELM = IconLoader.getIcon("/icons/icon_helm.png");
 
@@ -91,6 +94,9 @@ public class Icons {
 
     /** Npmignore icon. */
     public static final Icon NPM = IconLoader.getIcon("/icons/icon_npm.png");
+
+    /** NuxtJS icon. */
+    public static final Icon NUXTJS = IconLoader.getIcon("/icons/icon_nuxtjs.png");
 
     /** Perforce icon. */
     public static final Icon PERFORCE = IconLoader.getIcon("/icons/icon_perforce.png");
