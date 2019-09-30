@@ -730,7 +730,7 @@ public class IgnoreSettingsPanel implements Disposable {
         @Override
         public boolean isCellEditable(int row, int column) {
             final IgnoreLanguage language = ContainerUtil.newArrayList(settings.keySet()).get(row);
-            if (language != null && column == 2 && IgnoreBundle.isExcludedFromHighlighting(language)) {
+            if (language != null && column == 2) {
                 return false;
             }
 

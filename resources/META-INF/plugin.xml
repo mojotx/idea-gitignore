@@ -328,7 +328,13 @@
         <!-- END Fossil -->
 
         <!-- Git -->
-        <lang.syntaxHighlighterFactory language="GitIgnore"
+        <lang.parserDefinition language="Git"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <codeInsight.lineMarkerProvider language="Git"
+                                        implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher language="Git" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter language="Git" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory language="Git"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Git -->
 
@@ -390,7 +396,13 @@
         <!-- END Kubernetes Helm -->
 
         <!-- Mercurial -->
-        <lang.syntaxHighlighterFactory language="HgIgnore"
+        <lang.parserDefinition language="Mercurial"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <codeInsight.lineMarkerProvider language="Mercurial"
+                                        implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher language="Mercurial" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter language="Mercurial" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory language="Mercurial"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Mercurial -->
 

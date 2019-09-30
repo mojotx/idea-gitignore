@@ -119,7 +119,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         for (final IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
             put(language, new TreeMap<KEY, Object>() {{
                 put(KEY.NEW_FILE, true);
-                put(KEY.ENABLE, language.isVCS() && !IgnoreBundle.isExcludedFromHighlighting(language));
+                put(KEY.ENABLE, language.isVCS());
             }});
         }
     }};
@@ -257,7 +257,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         userTemplates.addAll(loadTemplates(element));
 
         for (IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
-            if (!language.isVCS() || IgnoreBundle.isExcludedFromHighlighting(language)) {
+            if (!language.isVCS()) {
                 languagesSettings.get(language).put(IgnoreLanguagesSettings.KEY.ENABLE, false);
             }
         }

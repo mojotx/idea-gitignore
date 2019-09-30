@@ -27,7 +27,6 @@ package mobi.hsz.idea.gitignore;
 import com.intellij.CommonBundle;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.ArrayUtil;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
@@ -184,10 +183,6 @@ public class IgnoreBundle {
             }
         }
         return null;
-    }
-
-    public static boolean isExcludedFromHighlighting(@NotNull IgnoreLanguage language) {
-        return ArrayUtil.contains(language, IGNORE_LANGUAGES_HIGHLIGHTING_EXCLUDED);
     }
 
     /**
