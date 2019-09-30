@@ -1,11 +1,7 @@
-.ignore 3.1.2
+.ignore 3.2.2
 =============
 
-[![Gitter][badge-gitter-img]][badge-gitter] [![Build Status][badge-travis-img]][badge-travis]
-
-[![Donate][badge-paypal-img]][badge-paypal]
-[![Backers on Open Collective](https://opencollective.com/ignore/backers/badge.svg)](#backers)
-[![Sponsors on Open Collective](https://opencollective.com/ignore/sponsors/badge.svg)](#sponsors)
+[![Build Status][badge-travis-img]][badge-travis]
 
 [![Version](http://phpstorm.espend.de/badge/7495/version)][plugin-website]
 [![Downloads](http://phpstorm.espend.de/badge/7495/downloads)][plugin-website]
@@ -123,31 +119,22 @@ Usage
 Changelog
 ---------
 
-### [v3.1.2](https://github.com/hsz/idea-gitignore/tree/v3.1.2) (2019-05-14)
+### [v3.2.2](https://github.com/JetBrains/idea-gitignore/tree/v3.2.2) (2019-09-02)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v3.0.0...v3.1.2)
+[Full Changelog](https://github.com/JetBrains/idea-gitignore/compare/v3.1.2...v3.2.2)
 
-**Implemented enhancements:**
+**Compatibility with 2019.2**
 
-- .gcloudignore (Google Cloud) support [\#577](https://github.com/hsz/idea-gitignore/issues/577)
-- .nuxtignore (Nuxt.js) support [\#576](https://github.com/hsz/idea-gitignore/issues/576)
-- Fixed deprecation warnings [\#567](https://github.com/hsz/idea-gitignore/issues/567)
-- Removed "tracked & ignored" feature [\#547](https://github.com/hsz/idea-gitignore/issues/547) [\#523](https://github.com/hsz/idea-gitignore/issues/523) [\#528](https://github.com/hsz/idea-gitignore/issues/528) [\#486](https://github.com/hsz/idea-gitignore/issues/486)
-- Display external .git/info/exclude files in "Outer ignore rules" side editor
-- Handle ~/.config/git/ignore ignore file [\#574](https://github.com/hsz/idea-gitignore/issues/574)
+IntelliJ release 2019.2 brings out of the box support for .gitignore and .hgignore files, so some functionality has moved from the plugin to the platform. 
+The following features are now provided by the platform:
+- Ignored status highlighting for .gitignore and .hgingore
+- Completion in .gitignore and .hgignore
+- Add to ignore actions
 
-**Fixed bugs:**
+The plugin still provides other features for .gitignore and .hgignore, and the full set of features for other supported ignore files.
 
-- Adding 2+ templates without new line in between [\#561](https://github.com/hsz/idea-gitignore/issues/561)
-- Fixed incorrect relative path resolving for ignored files [\#566](https://github.com/hsz/idea-gitignore/issues/566)
-- Fixed "is covered by" false-positive behaviour [\#565](https://github.com/hsz/idea-gitignore/issues/565) [\#228](https://github.com/hsz/idea-gitignore/issues/228)
-- Fix for IllegalStateException when ProjectUtil.guessProjectDir called on default project
-- Fixed incorrect double star pattern behaviour [\#579](https://github.com/hsz/idea-gitignore/issues/579)
-- Update downgrades on 2018.2+ [\#572](https://github.com/hsz/idea-gitignore/issues/572)
-- Group with id "GenerateGroup" isn't registered [\#573](https://github.com/hsz/idea-gitignore/issues/573)
-- Directories marked as excluded are reported as never used [\#571](https://github.com/hsz/idea-gitignore/issues/571)
-- All files are marked as ignored [\#581](https://github.com/hsz/idea-gitignore/issues/581)
-
+- Fix dependency on Mercurial Integration [\#592](https://github.com/hsz/idea-gitignore/issues/592) 
+- Fix index compatibility issue [\#593](https://github.com/hsz/idea-gitignore/issues/593) 
 
 [Full Changelog History](./CHANGELOG.md)
 
@@ -190,22 +177,6 @@ Developed By
 - [**@sergei-ivanov** Sergei Ivanov](https://github.com/sergei-ivanov)
 
 
-Backers
--------
-
-Support us with a monthly donation and help us continue our activities.
-
-[![Backers](https://opencollective.com/ignore/backers.svg)](https://opencollective.com/ignore#support)
-
-
-Sponsors
---------
-
-Become a sponsor to get your logo on our README on Github.
-
-[![Sponsors](https://opencollective.com/ignore/sponsors.svg)](https://opencollective.com/ignore#support)
-
-
 Tools
 -----
 
@@ -224,16 +195,7 @@ Copyright (c) 2018 hsz Jakub Chrzanowski. See the [LICENSE](./LICENSE) file for 
 [github-gitignore]:       https://github.com/github/gitignore
 [gradle-intellij-plugin]: https://github.com/JetBrains/gradle-intellij-plugin
 [hsz]:                    http://hsz.mobi
-[website]:                http://ignore.hsz.mobi
 [plugin-website]:         https://plugins.jetbrains.com/plugin/7495
-[latest-release]:         https://github.com/hsz/idea-gitignore/releases/latest
-
-
-[badge-gitter-img]:       https://badges.gitter.im/hsz/idea-gitignore.svg
-[badge-gitter]:           https://gitter.im/hsz/idea-gitignore
-[badge-travis-img]:       https://travis-ci.org/hsz/idea-gitignore.svg?branch=master
-[badge-travis]:           https://travis-ci.org/hsz/idea-gitignore
-[badge-coveralls-img]:    https://coveralls.io/repos/github/hsz/idea-gitignore/badge.svg?branch=master
-[badge-coveralls]:        https://coveralls.io/github/hsz/idea-gitignore?branch=master
-[badge-paypal-img]:       https://img.shields.io/badge/donate-paypal-yellow.svg
-[badge-paypal]:           https://www.paypal.me/hsz
+[latest-release]:         https://github.com/JetBrains/idea-gitignore/releases/latest
+[badge-travis-img]:       https://travis-ci.org/JetBrains/idea-gitignore.svg?branch=master
+[badge-travis]:           https://travis-ci.org/JetBrains/idea-gitignore
