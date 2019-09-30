@@ -1,4 +1,4 @@
-# Configuration for CI build at https://travis-ci.org/hsz/idea-gitignore
+# Configuration for CI build at https://travis-ci.org/JetBrains/idea-gitignore
 
 language: java
 
@@ -24,6 +24,8 @@ cache:
   directories:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
+
+script: ./gradlew assemble
 
 after_success:
   - ./gradlew jacocoTestReport coveralls
