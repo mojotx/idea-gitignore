@@ -25,7 +25,6 @@
 package mobi.hsz.idea.gitignore.ui;
 
 import com.intellij.icons.AllIcons;
-import com.intellij.ide.BrowserUtil;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -52,11 +51,10 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileWrapper;
 import com.intellij.ui.AddEditDeleteListPanel;
+import com.intellij.ui.BooleanTableCellRenderer;
 import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBLabel;
-import com.intellij.ui.components.JBPanel;
-import com.intellij.ui.components.labels.ActionLink;
 import com.intellij.ui.table.JBTable;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.ui.JBUI;
@@ -121,9 +119,6 @@ public class IgnoreSettingsPanel implements Disposable {
     /** Enable unignore files group. */
     public JCheckBox unignoreFiles;
 
-    /** Panel with information about donations. */
-    private JPanel donatePanel;
-
     /** Inform about editing ignored file. */
     private JCheckBox notifyIgnoredEditing;
 
@@ -145,8 +140,18 @@ public class IgnoreSettingsPanel implements Disposable {
         languagesTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         languagesTable.setColumnSelectionAllowed(false);
         languagesTable.setRowHeight(22);
-        languagesTable.setPreferredScrollableViewportSize(new Dimension(-1,
-                languagesTable.getRowHeight() * IgnoreBundle.LANGUAGES.size() / 2));
+        languagesTable.getColumnModel().getColumn(2).setCellRenderer(new BooleanTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSel, boolean hasFocus,
+                                                           int row, int column) {
+                boolean editable = table.isCellEditable(row, column);
+                Object newValue = editable ? value : null;
+                return super.getTableCellRendererComponent(table, newValue, isSel, hasFocus, row, column);
+            }
+        });
+        languagesTable.setPreferredScrollableViewportSize(
+                new Dimension(-1, languagesTable.getRowHeight() * IgnoreBundle.LANGUAGES.size() / 2)
+        );
 
         languagesTable.setStriped(true);
         languagesTable.setShowGrid(false);
@@ -154,32 +159,6 @@ public class IgnoreSettingsPanel implements Disposable {
         languagesTable.setDragEnabled(false);
 
         languagesPanel = ScrollPaneFactory.createScrollPane(languagesTable);
-
-        donatePanel = new JBPanel(new BorderLayout());
-        donatePanel.setBorder(JBUI.Borders.empty(10, 0));
-        donatePanel.add(new JBLabel(IgnoreBundle.message("settings.general.donate")), BorderLayout.WEST);
-        donatePanel.add(createLink(
-                "Donate with PayPal",
-                "https://www.paypal.me/hsz"
-        ), BorderLayout.CENTER);
-    }
-
-    /**
-     * Creates {@link ActionLink} component with URL open action.
-     *
-     * @param title title of link
-     * @param url   url to open
-     * @return {@link ActionLink} component
-     */
-    private ActionLink createLink(@NotNull String title, @NotNull final String url) {
-        final ActionLink action = new ActionLink(title, new AnAction() {
-            @Override
-            public void actionPerformed(@NotNull AnActionEvent anActionEvent) {
-                BrowserUtil.browse(url);
-            }
-        });
-        action.setBorder(JBUI.Borders.empty(0, 5));
-        return action;
     }
 
     /** Disposes current preview {@link #editorPanel}. */
@@ -351,7 +330,7 @@ public class IgnoreSettingsPanel implements Disposable {
 
         /** Constructs CRUD panel with list listener for editor updating. */
         public TemplatesListPanel() {
-            super(null, ContainerUtil.newArrayList());
+            super(null, new ArrayList<>());
             myList.addListSelectionListener(e -> {
                 boolean enabled = myListModel.size() > 0;
                 editorPanel.setEnabled(enabled);
@@ -568,7 +547,7 @@ public class IgnoreSettingsPanel implements Disposable {
          * @return templates list
          */
         public List<IgnoreSettings.UserTemplate> getList() {
-            ArrayList<IgnoreSettings.UserTemplate> list = ContainerUtil.newArrayList();
+            ArrayList<IgnoreSettings.UserTemplate> list = new ArrayList<>();
             for (int i = 0; i < myListModel.size(); i++) {
                 list.add(myListModel.getElementAt(i));
             }
@@ -607,7 +586,7 @@ public class IgnoreSettingsPanel implements Disposable {
          * @return {@link IgnoreSettings.UserTemplate} list
          */
         public List<IgnoreSettings.UserTemplate> getCurrentItems() {
-            List<IgnoreSettings.UserTemplate> list = ContainerUtil.newArrayList();
+            List<IgnoreSettings.UserTemplate> list = new ArrayList<>();
             int[] ids = myList.getSelectedIndices();
             for (int i = 0; i < ids.length; i++) {
                 list.add(getList().get(i));
@@ -750,6 +729,11 @@ public class IgnoreSettingsPanel implements Disposable {
          */
         @Override
         public boolean isCellEditable(int row, int column) {
+            final IgnoreLanguage language = ContainerUtil.newArrayList(settings.keySet()).get(row);
+            if (language != null && column == 2) {
+                return false;
+            }
+
             return column != 0;
         }
 
@@ -775,12 +759,23 @@ public class IgnoreSettingsPanel implements Disposable {
                 case 0:
                     return language.getID();
                 case 1:
-                    return Boolean.valueOf(data.get(NEW_FILE).toString());
+                    return getBoolean(NEW_FILE, data);
                 case 2:
-                    return Boolean.valueOf(data.get(ENABLE).toString());
+                    return getBoolean(ENABLE, data);
             }
 
             throw new IllegalArgumentException();
+        }
+
+        @NotNull
+        private Boolean getBoolean(IgnoreSettings.IgnoreLanguagesSettings.KEY key,
+                                   TreeMap<IgnoreSettings.IgnoreLanguagesSettings.KEY, Object> data) {
+            Object objectByKey = data.get(key);
+            if (objectByKey == null) {
+                return false;
+            }
+
+            return Boolean.valueOf(objectByKey.toString());
         }
 
         /**

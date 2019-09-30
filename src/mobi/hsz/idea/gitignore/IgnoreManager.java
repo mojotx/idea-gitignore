@@ -35,7 +35,10 @@ import com.intellij.openapi.fileTypes.ExactFileNameMatcher;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.fileTypes.FileTypeManager;
 import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.project.*;
+import com.intellij.openapi.project.DumbAware;
+import com.intellij.openapi.project.DumbService;
+import com.intellij.openapi.project.NoAccessDuringPsiEvents;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vcs.FileStatusManager;
@@ -61,10 +64,7 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentMap;
 import java.util.regex.Pattern;
 
@@ -182,7 +182,7 @@ public class IgnoreManager implements DumbAware, ProjectComponent {
 
     /** List of available VCS roots for the current project. */
     @NotNull
-    private final List<VcsRoot> vcsRoots = ContainerUtil.newArrayList();
+    private final List<VcsRoot> vcsRoots = new ArrayList<>();
 
     /** {@link VirtualFileListener} instance to check if file's content was changed. */
     @NotNull
@@ -581,7 +581,7 @@ public class IgnoreManager implements DumbAware, ProjectComponent {
         public void run(boolean silent) {
             final ConcurrentMap<VirtualFile, VcsRoot> result = ContainerUtil.newConcurrentMap();
             for (VcsRoot vcsRoot : vcsRoots) {
-                if (!(vcsRoot.getVcs() instanceof GitVcs) || vcsRoot.getPath() == null) {
+                if (!Utils.isGitPluginEnabled() || !(vcsRoot.getVcs() instanceof GitVcs) || vcsRoot.getPath() == null) {
                     continue;
                 }
                 final VirtualFile root = vcsRoot.getPath();
