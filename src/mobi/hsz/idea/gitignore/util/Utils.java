@@ -250,24 +250,6 @@ public class Utils {
     }
 
     /**
-     * Returns Gitignore plugin information.
-     *
-     * @return {@link IdeaPluginDescriptor}
-     */
-    public static IdeaPluginDescriptor getPlugin() {
-        return PluginManager.getPlugin(PluginId.getId(IgnoreBundle.PLUGIN_ID));
-    }
-
-    /**
-     * Returns plugin version.
-     *
-     * @return version
-     */
-    public static String getVersion() {
-        return getPlugin().getVersion();
-    }
-
-    /**
      * Checks if lists are equal.
      *
      * @param l1 first list
@@ -402,6 +384,15 @@ public class Utils {
      */
     public static boolean isGitPluginEnabled() {
         return isPluginEnabled("Git4Idea");
+    }
+
+    /**
+     * Checks if Mercurial plugin is enabled.
+     *
+     * @return Mercurial plugin is enabled
+     */
+    public static boolean isMercurialPluginEnabled() {
+        return isPluginEnabled("hg4idea");
     }
 
     /**
